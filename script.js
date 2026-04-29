@@ -7,6 +7,10 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const navEl = document.querySelector('.nav');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -94,3 +98,40 @@ navLinkParent.addEventListener('click', function (e) {
 });
 
 console.log(h1.parent);
+
+///// TABBED COMPONENT
+
+tabsContainer.addEventListener('click', e => {
+  const clicked = e.target.closest('.operations__tab');
+  if (!clicked) return; //GUARD CLAUSE
+
+  //remove active classes
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  //activate active tab
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+  clicked.classList.add('operations__tab--active');
+  //activate content area
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
+////// MENU FADE ANIMATION
+
+function handleOver(e, opacity) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+    siblings.forEach(sib => {
+      if (sib !== link) {
+        sib.style.opacity = this;
+      }
+    });
+    logo.style.opacity = this;
+  }
+}
+
+navEl.addEventListener('mouseover', handleOver.bind(0.5));
+
+navEl.addEventListener('mouseout', e => handleOver.bind(0.5));
